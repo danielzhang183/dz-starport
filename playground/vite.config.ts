@@ -1,10 +1,10 @@
+import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Unocss from 'unocss/vite'
-import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,11 +29,6 @@ export default defineConfig({
         'vue/macros',
         'vue-router',
         '@vueuse/core',
-      ],
-      // Auto import for module exports under directories
-      // by default it only scan one level of modules under the directory
-      dirs: [
-        './src/composables', // only root modules
       ],
       // Filepath to generate corresponding .d.ts file.
       // Defaults to './auto-imports.d.ts' when `typescript` is installed locally.

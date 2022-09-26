@@ -6,6 +6,7 @@
   "packageManager": "pnpm@7.9.0",
   "scripts": {
     "dev": "vite",
+    "play": "nr -C playground dev",
     "lint": "eslint .",
     "lintf": "eslint . --fix",
     "typecheck": "vue-tsc --noEmit",

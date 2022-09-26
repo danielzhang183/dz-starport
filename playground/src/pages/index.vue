@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { TheImageProxy } from '~/composables/image'
+</script>
+
 <template>
   <div>
     <div>Index</div>
@@ -9,6 +13,6 @@
         Go
       </RouterLink>
     </div>
-    <FloatProxy w-50 h-50 rounded-xl />
+    <TheImageProxy w-50 h-50 rounded-xl />
   </div>
 </template>
