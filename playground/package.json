@@ -1,0 +1,37 @@
+{
+  "name": "vite-lite-starter",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@7.9.0",
+  "scripts": {
+    "dev": "vite",
+    "lint": "eslint .",
+    "lintf": "eslint . --fix",
+    "typecheck": "vue-tsc --noEmit",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "up": "taze major -I"
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.1.0",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.3"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.26.1",
+    "@iconify-json/carbon": "^1.1.7",
+    "@types/node": "^18.7.18",
+    "@unocss/reset": "^0.45.6",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "eslint": "^8.21.0",
+    "taze": "^0.7.6",
+    "typescript": "^4.6.4",
+    "unocss": "^0.45.6",
+    "unplugin-auto-import": "^0.11.1",
+    "unplugin-vue-components": "^0.22.4",
+    "vite": "^3.0.7",
+    "vite-plugin-pages": "^0.25.0",
+    "vue-tsc": "^0.39.5"
+  }
+}
