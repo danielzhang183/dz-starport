@@ -1,10 +1,10 @@
 import TheImage from '../components/TheImage.vue'
-import { createFloating } from './floating'
+import { createStarport } from '../../../src'
 
 const {
   container: TheImageContainer,
   proxy: TheImageProxy,
-} = createFloating(TheImage)
+} = createStarport(TheImage)
 
 export {
   TheImageContainer,

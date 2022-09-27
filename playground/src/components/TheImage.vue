@@ -1,10 +1,32 @@
-<script lang="ts" setup>
-const a = $ref(false)
+<script setup lang="ts">
+const counter = $ref(Math.round(Math.random() * 100))
+
+onMounted(() => {
+  // eslint-disable-next-line no-console
+  console.log('Image Mounted')
+})
 </script>
 
 <template>
-  <div overflow-hidden transition-all @click="a = !a">
-    <img v-if="a" object-center object-contain src="https://images.unsplash.com/photo-1661956600655-e772b2b97db4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60">
-    <img v-else object-center object-contain src="https://images.unsplash.com/photo-1664030391940-261073d09013?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMTN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60">
+  <div
+    overflow-hidden w-full h-full
+    transition-all duration-800
+    relative select-none
+    @click="counter += 1"
+  >
+    <img
+      object-cover block w-full h-full
+      src="https://source.unsplash.com/collection/94734566/512x512"
+      bg-gray-400:20
+    >
+    <div
+      absolute pt-5 left-0 right-0 bottom-0
+      bg-gradient-to-t from-black:40 to-transparent
+      text-white font-mono
+      flex items-center justify-center
+    >
+      {{ counter }}
+    </div>
   </div>
 </template>
+
