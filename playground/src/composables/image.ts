@@ -2,11 +2,13 @@ import TheImage from '../components/TheImage.vue'
 import { createStarport } from '../../../src'
 
 const {
-  container: TheImageContainer,
-  proxy: TheImageProxy,
+  starcarrier: TheImageCarrier,
+  starcraft: TheImageCraft,
+  starproxy: TheImageProxy,
 } = createStarport(TheImage)
 
 export {
-  TheImageContainer,
+  TheImageCarrier,
+  TheImageCraft,
   TheImageProxy,
 }

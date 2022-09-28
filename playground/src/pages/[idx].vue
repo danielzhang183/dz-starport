@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { TheImageProxy } from '../composables/image'
+import { TheImageProxy } from '~/composables/image'
+import { images } from '~/composables/data'
+
+defineProps<{
+  idx: string
+}>()
 
 let size = $(useStorage('size', 200))
 
@@ -27,9 +32,11 @@ function reset() {
     </div>
     <div m10 flex="~ col sm:row-reverse gap-4" items-center max-w-180>
       <TheImageProxy
+        :port="idx"
         transition-all duration-600
         :style="{ width: `${size}px`, height: `${size}px` }"
         :attrs="{ class: 'rounded-1/2 shadow-xl' }"
+        :props="{ src: images[+idx] }"
       />
       <p flex-1 text-left>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

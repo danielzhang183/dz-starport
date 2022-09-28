@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TheImageContainer } from './composables/image'
+import { TheImageCarrier } from './composables/image'
 </script>
 
 <template>
@@ -13,5 +13,5 @@ import { TheImageContainer } from './composables/image'
       </transition>
     </router-view>
   </main>
-  <TheImageContainer />
+  <TheImageCarrier />
 </template>

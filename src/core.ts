@@ -1,5 +1,5 @@
 /* eslint-disable vue/one-component-per-file */
-import { Teleport, computed, defineComponent, h, onBeforeUnmount } from 'vue'
+import { Teleport, computed, defineComponent, h, onBeforeUnmount, renderList } from 'vue'
 import type { Component, StyleValue } from 'vue'
 import { nanoid } from 'nanoid'
 import type { ResolvedStarportOptions, StarportOptions } from './types'
@@ -16,15 +16,19 @@ export function createStarport<T extends Component>(
     ...options,
   }
   const defaultId = nanoid()
-  const contextMap = new Map<string, StarportContext>()
+  const counter = ref(0)
+  const portMap = new Map<string, StarportContext>()
 
   function getContext(port = defaultId) {
-    if (!contextMap.get(port))
-      contextMap.set(port, createStarportContext())
-    return contextMap.get(port)!
+    if (!portMap.get(port)) {
+      counter.value++
+      portMap.set(port, createStarportContext())
+    }
+    return portMap.get(port)!
   }
 
-  const container = defineComponent({
+  const starcraft = defineComponent({
+    name: 'StarCraft',
     props: {
       port: {
         type: String,
@@ -74,7 +78,7 @@ export function createStarport<T extends Component>(
           'div',
           {
             style: style.value,
-            class: 'starport-container',
+            class: 'starport-craft',
             onTransitionend: async () => {
               await nextTick()
               context.value.land()
@@ -93,7 +97,8 @@ export function createStarport<T extends Component>(
     },
   })
 
-  const proxy = defineComponent({
+  const starproxy = defineComponent({
+    name: 'StarProxy',
     props: {
       port: {
         type: String,
@@ -137,8 +142,25 @@ export function createStarport<T extends Component>(
     },
   })
 
+  const starcarrier = defineComponent({
+    name: 'StarportCarrier',
+    render() {
+      // Workaround: force renderer
+      // eslint-disable-next-line no-unused-expressions
+      counter.value
+      return renderList(
+        Array.from(portMap.keys()),
+        port => h(starcraft, {
+          port,
+          key: port,
+        }),
+      )
+    },
+  })
+
   return {
-    container,
-    proxy,
+    starcarrier,
+    starcraft,
+    starproxy,
   }
 }

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { TheImageProxy } from '../composables/image'
+import { TheImageProxy } from '~/composables/image'
+import { images } from '~/composables/data'
+
 const mode = ref(false)
 const toggle = useToggle(mode)
 </script>
@@ -10,15 +12,25 @@ const toggle = useToggle(mode)
       <button btn @click="toggle()">
         Toggle Size
       </button>
-      <router-link btn to="/foo" saturate-0>
+      <RouterLink btn to="/foo" saturate-0>
         Navigate
-      </router-link>
+      </RouterLink>
     </div>
 
-    <TheImageProxy
-      transition-all duration-800
-      :class="mode ? 'w-50 h-50' : 'w-60 h-30'"
-      :attrs="{ class: 'rounded-xl' }"
-    />
+    <div flex="~ gap-4" wrap justify-center>
+      <RouterLink
+        v-for="img, idx of images"
+        :key="img"
+        :to="`/${idx}`"
+      >
+        <TheImageProxy
+          :port="String(idx)"
+          transition-all duration-800
+          :class="mode ? 'w-50 h-50' : 'w-60 h-30'"
+          :attrs="{ class: 'rounded-xl' }"
+          :props="{ src: img }"
+        />
+      </RouterLink>
+    </div>
   </div>
 </template>
