@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { TheImageProxy } from '~/composables/image'
 import { images } from '~/composables/data'
 
 const mode = ref(false)
@@ -23,13 +22,18 @@ const toggle = useToggle(mode)
         :key="img"
         :to="`/${idx}`"
       >
-        <TheImageProxy
+        <Starport
           :port="String(idx)"
           transition-all duration-800
           :class="mode ? 'w-50 h-50' : 'w-60 h-30'"
           :attrs="{ class: 'rounded-xl' }"
           :props="{ src: img }"
-        />
+        >
+          <TheImage
+            :class="mode ? 'rounded shadow-lg' : ''"
+            :src="img"
+          />
+        </Starport>
       </RouterLink>
     </div>
   </div>

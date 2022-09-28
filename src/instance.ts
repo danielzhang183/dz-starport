@@ -1,11 +1,20 @@
 import type { UseElementBoundingReturn } from '@vueuse/core'
-import { customAlphabet } from 'nanoid'
-import type { Ref } from 'vue'
+import { customAlphabet, nanoid } from 'nanoid'
+import type { Component, Ref } from 'vue'
 import { reactive, ref } from 'vue'
+import type { StarportOptions } from './types'
+import { getComponentName, kebabCase } from './utils'
 
 const getId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
 
-export function createStarportContext() {
+export function createStarportInstance(
+  port: string,
+  component: Component,
+  options: StarportOptions = {},
+) {
+  const componentName = getComponentName(component)
+  const componentId = kebabCase(componentName) || nanoid()
+
   const el: Ref<HTMLElement | undefined> = ref()
   const props: Ref<any> = ref()
   const attrs: Ref<any> = ref()
@@ -28,13 +37,18 @@ export function createStarportContext() {
 
   return reactive({
     el,
+    id,
+    port,
     props,
     attrs,
     rect,
     scope,
-    id,
     isLanded,
     isVisible,
+    options,
+    component,
+    componentName,
+    componentId,
     elRef() {
       return el
     },
@@ -51,4 +65,4 @@ export function createStarportContext() {
   })
 }
 
-export type StarportContext = ReturnType<typeof createStarportContext>
+export type StarportInstance = ReturnType<typeof createStarportInstance>
