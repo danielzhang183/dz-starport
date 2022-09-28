@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { TheImageProxy } from '../composables/image'
-
 const mode = ref(false)
 const toggle = useToggle(mode)
 </script>
@@ -17,9 +16,9 @@ const toggle = useToggle(mode)
     </div>
 
     <TheImageProxy
+      transition-all duration-800
       :class="mode ? 'w-50 h-50' : 'w-60 h-30'"
       :attrs="{ class: 'rounded-xl' }"
     />
   </div>
 </template>
-

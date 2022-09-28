@@ -1,8 +1,10 @@
+/* eslint-disable vue/one-component-per-file */
 import { Teleport, computed, defineComponent, h, onBeforeUnmount } from 'vue'
 import type { Component, StyleValue } from 'vue'
 import { nanoid } from 'nanoid'
 import type { ResolvedStarportOptions, StarportOptions } from './types'
-import { StarportContext } from './context'
+import type { StarportContext } from './context'
+import { createStarportContext } from './context'
 
 export function createStarport<T extends Component>(
   component: T,
@@ -18,7 +20,7 @@ export function createStarport<T extends Component>(
 
   function getContext(port = defaultId) {
     if (!contextMap.get(port))
-      contextMap.set(port, new StarportContext(resolved))
+      contextMap.set(port, createStarportContext())
     return contextMap.get(port)!
   }
 
@@ -34,39 +36,39 @@ export function createStarport<T extends Component>(
       const context = computed(() => getContext(props.port))
 
       const style = computed<StyleValue>((): StyleValue => {
-        const fixed: StyleValue = {
-          transition: `all ${resolved.duration}ms ease-in-out`,
-          position: 'fixed',
-        }
-
         const rect = context.value.rect
-        const el = context.value.el.value
-        if (!rect || !el) {
-          return {
-            opacity: 0,
-            pointerEvents: 'none',
-          }
-        }
-        return {
-          ...fixed,
+        const style: StyleValue = {
+          position: 'fixed',
           top: `${rect?.top}px`,
           left: `${rect?.left}px`,
           width: `${rect.width ?? 0}px`,
           height: `${rect.height ?? 0}px`,
         }
+        if (!context.value.isVisible || !context.value.el) {
+          return {
+            ...style,
+            display: 'none',
+          }
+        }
+
+        if (context.value.isLanded)
+          style.pointerEvents = 'none'
+        else
+          style.transition = `all ${resolved.duration}ms ease-in-out`
+        return style
       })
 
       const cleanRouterGuard = router.beforeEach(async () => {
-        context.value.liftOff()
+        await context.value.liftOff()
         await nextTick()
       })
 
-      onBeforeUnmount(() => cleanRouterGuard())
+      onBeforeUnmount(cleanRouterGuard)
 
       return () => {
         const comp = h(component as any, {
-          ...context.value.props.value,
-          ...context.value.attrs.value,
+          ...context.value.props,
+          ...context.value.attrs,
         })
         return h(
           'div',
@@ -79,10 +81,10 @@ export function createStarport<T extends Component>(
             },
           },
           h(Teleport, {
-            to: context.value.isLanded.value
+            to: context.value.isLanded
               ? `#${context.value.id}`
               : 'body',
-            disabled: !context.value.isLanded.value,
+            disabled: !context.value.isLanded,
           },
           comp,
           ),
@@ -108,18 +110,23 @@ export function createStarport<T extends Component>(
     },
     setup(props, ctx) {
       const context = computed(() => getContext(props.port))
+      const el = context.value.elRef()
+
+      if (!context.value.isVisible)
+        context.value.land()
 
       onBeforeUnmount(() => {
+        context.value.rect.update()
         context.value.liftOff()
       })
 
-      context.value.attrs.value = props.attrs
-      context.value.props.value = props.props
+      context.value.attrs = props.attrs
+      context.value.props = props.props
 
       return () => h(
         'div',
         {
-          ref: context.value.el,
+          ref: el,
           id: context.value.id,
           class: 'starport-proxy',
         },
