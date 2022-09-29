@@ -1,8 +1,8 @@
-import type { UseElementBoundingReturn } from '@vueuse/core'
 import { customAlphabet, nanoid } from 'nanoid'
 import type { Component, Ref } from 'vue'
 import { reactive, ref } from 'vue'
-import type { StarportOptions } from './types'
+import { defaultOptions } from './options'
+import type { ResolvedStarportOptions, StarportOptions } from './types'
 import { getComponentName, kebabCase } from './utils'
 
 const getId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
@@ -10,19 +10,25 @@ const getId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
 export function createStarportInstance(
   port: string,
   component: Component,
-  options: StarportOptions = {},
+  inlineOptions: StarportOptions = {},
 ) {
   const componentName = getComponentName(component)
   const componentId = kebabCase(componentName) || nanoid()
 
   const el: Ref<HTMLElement | undefined> = ref()
   const props: Ref<any> = ref()
-  const attrs: Ref<any> = ref()
-  let rect: UseElementBoundingReturn = undefined!
   const scope = effectScope(true)
   const id = getId()
   const isLanded: Ref<boolean> = ref(false)
   const isVisible: Ref<boolean> = ref(false)
+  const localOptions = ref<StarportOptions>({})
+  const options = computed<ResolvedStarportOptions>(() => ({
+    ...defaultOptions,
+    ...inlineOptions,
+    ...localOptions.value,
+  }))
+
+  let rect: ReturnType<typeof useElementBounding> = undefined!
 
   scope.run(() => {
     rect = useElementBounding(el)
@@ -40,7 +46,6 @@ export function createStarportInstance(
     id,
     port,
     props,
-    attrs,
     rect,
     scope,
     isLanded,

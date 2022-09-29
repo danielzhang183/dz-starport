@@ -26,7 +26,6 @@ const toggle = useToggle(mode)
           :port="String(idx)"
           transition-all duration-800
           :class="mode ? 'w-50 h-50' : 'w-60 h-30'"
-          :attrs="{ class: 'rounded-xl' }"
           :props="{ src: img }"
         >
           <TheImage

@@ -16,5 +16,5 @@ const router = createRouter({
 
 app
   .use(router)
-  .use(Starport({}))
+  .use(Starport({ keepAlive: true }))
   .mount('#app')

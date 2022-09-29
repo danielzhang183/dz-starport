@@ -52,7 +52,6 @@ export const StarportCraft = defineComponent({
     return () => {
       const comp = h(sp.value.component as any, {
         ...sp.value.props,
-        ...sp.value.attrs,
       })
       return h(
         'div',
