@@ -19,7 +19,8 @@
       "vite-plugin-pages/client"
     ],
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "dz-starport": ["../src/index.ts"]
     }
   },
   "exclude": ["dist", "node_modules"]
