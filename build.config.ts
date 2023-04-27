@@ -1,12 +1,18 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
+  declaration: true,
+  clean: true,
   entries: [
     'src/index',
   ],
-  declaration: true,
-  clean: true,
   rollup: {
     emitCJS: true,
+    inlineDependencies: true,
   },
+  externals: [
+    'vue',
+    'vue-router',
+    '@vueuse/core',
+  ],
 })

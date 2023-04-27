@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { reactive } from 'vue'
 import type { StarportInstance } from './instance'
 import { createStarportInstance } from './instance'
 import type { StarportOptions } from './types'

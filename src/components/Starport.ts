@@ -1,7 +1,9 @@
 import { isObject } from '@vueuse/core'
-import { isVNode } from 'vue'
+import { DefineComponent, defineComponent, h, inject, isVNode, markRaw, onMounted, ref } from 'vue'
 import { proxyProps } from '../options'
+import { InjectionState } from '../constants'
 import { StarportProxy } from './StarportProxy'
+import { StarportProps } from '../types'
 
 export const Starport = defineComponent({
   name: 'Starport',
@@ -12,6 +14,11 @@ export const Starport = defineComponent({
 
     onMounted(() => {
       isMounted.value = true
+      if (process.env.NODE_ENV === 'development') {
+        const state = inject(InjectionState)
+        if (!state)
+          throw new Error('[Vue Starport] Failed to find the carrier, all Starport components must be wrapped in a <StarportCarrier> component.')
+      }
     })
 
     return () => {
@@ -41,4 +48,4 @@ export const Starport = defineComponent({
       })
     }
   },
-})
+}) as DefineComponent<StarportProps>

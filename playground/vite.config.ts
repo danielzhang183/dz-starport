@@ -39,7 +39,7 @@ export default defineConfig({
           ],
         },
         {
-          from: 'vue-starport',
+          from: 'dz-starport',
           names: [
             'Starport',
             'StarportCarrier',

@@ -7,11 +7,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Footer: typeof import('./src/components/Footer.vue')['default']
+    MyComponent: typeof import('./src/components/MyComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Starport: typeof import('vue-starport')['Starport']
-    StarportCarrier: typeof import('vue-starport')['StarportCarrier']
-    TheImage: typeof import('./src/components/TheImage.vue')['default']
+    Starport: typeof import('dz-starport')['Starport']
+    StarportCarrier: typeof import('dz-starport')['StarportCarrier']
+    TheLogo: typeof import('./src/components/TheLogo.vue')['default']
+    TheNav: typeof import('./src/components/TheNav.vue')['default']
   }
 }

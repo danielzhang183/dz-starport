@@ -1,32 +1,33 @@
-import { customAlphabet, nanoid } from 'nanoid'
+import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue'
 import type { Component, Ref } from 'vue'
-import { reactive, ref } from 'vue'
+import { useElementBounding } from './composables'
 import { defaultOptions } from './options'
 import type { ResolvedStarportOptions, StarportOptions } from './types'
-import { getComponentName, kebabCase } from './utils'
+import { getComponentName, kebabCase, nanoid } from './utils'
 
-const getId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
-
+/**
+ * @internal
+ */
 export function createStarportInstance(
   port: string,
   component: Component,
   inlineOptions: StarportOptions = {},
-) {
+): any {
   const componentName = getComponentName(component)
   const componentId = kebabCase(componentName) || nanoid()
 
   const el: Ref<HTMLElement | undefined> = ref()
-  const props: Ref<any> = ref()
-  const scope = effectScope(true)
-  const id = getId()
+  const props: Ref<any> = ref(null)
   const isLanded: Ref<boolean> = ref(false)
-  const isVisible: Ref<boolean> = ref(false)
+  const isVisible = ref(false)
+  const scope = effectScope(true)
   const localOptions = ref<StarportOptions>({})
   const options = computed<ResolvedStarportOptions>(() => ({
     ...defaultOptions,
     ...inlineOptions,
     ...localOptions.value,
   }))
+  const liftOffTime = ref(0)
 
   let rect: ReturnType<typeof useElementBounding> = undefined!
 
@@ -41,6 +42,13 @@ export function createStarportInstance(
     })
   })
 
+  const portId = kebabCase(port)
+  function generateId() {
+    return `starport-${componentId}-${portId}-${nanoid()}`
+  }
+
+  const id = generateId()
+
   return reactive({
     el,
     id,
@@ -51,21 +59,31 @@ export function createStarportInstance(
     isLanded,
     isVisible,
     options,
+    liftOffTime,
     component,
     componentName,
     componentId,
+    generateId,
+    setLocalOptions(options: StarportOptions = {}) {
+      localOptions.value = JSON.parse(JSON.stringify(options))
+    },
     elRef() {
       return el
     },
-    async liftOff() {
+    liftOff() {
       if (!isLanded.value)
         return
       isLanded.value = false
+      liftOffTime.value = Date.now()
+      rect.listen()
+      // console.log('lift off', port)
     },
-    async land() {
+    land() {
       if (isLanded.value)
         return
       isLanded.value = true
+      rect.pause()
+      // console.log('land', port)
     },
   })
 }

@@ -1,18 +1,22 @@
 <script setup lang="ts">
-
+import { isDebug } from '~/composables'
 </script>
 
 <template>
-  <main font-sans p="x-4 y-10" text="center gray-700 dark:gray-200" relative>
+  <main
+    font-sans text="center gray-700 dark:gray-200" relative
+    :class="{ debug: isDebug }"
+  >
+    <TheNav />
     <StarportCarrier>
-      <router-view v-slot="{ Component }">
+      <RouterView v-slot="{ Component }">
         <transition name="page-fade">
           <component
             :is="Component"
             absolute left-0 right-0 top-25
           />
         </transition>
-      </router-view>
+      </RouterView>
     </StarportCarrier>
   </main>
 </template>
