@@ -29,6 +29,7 @@
     "release": "bumpp && npm publish",
     "start": "esno src/index.ts",
     "test": "vitest",
+    "test:e2e": "cypress open",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -39,6 +40,7 @@
     "@antfu/eslint-config": "^0.27.0",
     "@types/node": "^18.16.1",
     "bumpp": "^8.2.1",
+    "cypress": "^12.11.0",
     "eslint": "^8.39.0",
     "esno": "^0.16.3",
     "nanoid": "^4.0.2",
